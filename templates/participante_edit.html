@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Participante{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-8">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i>Editar Participante: {{ participante[0] }}</h4>
+                <span class="badge bg-light text-dark font-monospace">{{ participante[0] }}</span>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-4">
+                            <label class="form-label fw-bold">Código Participante (PK)</label>
+                            <input type="text" class="form-control bg-light" value="{{ participante[0] }}" disabled>
+                            <div class="form-text">La clave primaria no puede modificarse.</div>
+                        </div>
+
+                        <div class="col-md-8">
+                            <label for="nombre" class="form-label fw-bold">Nombre <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" value="{{ participante[1] }}" maxlength="15" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="paterno" class="form-label fw-bold">Apellido Paterno <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="paterno" name="paterno" value="{{ participante[2] }}" maxlength="15" required>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="materno" class="form-label fw-bold">Apellido Materno <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="materno" name="materno" value="{{ participante[3] }}" maxlength="15" required>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="fecnac" class="form-label fw-bold">Fecha de Nacimiento</label>
+                            <input type="date" class="form-control" id="fecnac" name="fecnac" value="{{ participante[4] if participante[4] else '' }}">
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="sexo" class="form-label fw-bold">Sexo <span class="text-danger">*</span></label>
+                            <select class="form-select" id="sexo" name="sexo" required>
+                                <option value="v" {% if participante[5] == 'v' %}selected{% endif %}>Varón (v)</option>
+                                <option value="m" {% if participante[5] == 'm' %}selected{% endif %}>Mujer (m)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="tipo" class="form-label fw-bold">Tipo de Rol <span class="text-danger">*</span></label>
+                            <select class="form-select" id="tipo" name="tipo" required>
+                                <option value="b" {% if participante[6] == 'b' %}selected{% endif %}>Bailarín (b)</option>
+                                <option value="j" {% if participante[6] == 'j' %}selected{% endif %}>Jurado (j)</option>
+                                <option value="c" {% if participante[6] == 'c' %}selected{% endif %}>Coach (c)</option>
+                            </select>
+                        </div>
+
+                        <div class="col-12">
+                            <label for="codIns" class="form-label fw-bold">Institución / Academia Perteneciente</label>
+                            <select class="form-select" id="codIns" name="codIns">
+                                <option value="">-- Sin Institución Asignada (NULL) --</option>
+                                {% for ins in instituciones %}
+                                    <option value="{{ ins[0] }}" {% if participante[7] == ins[0] %}selected{% endif %}>
+                                        {{ ins[1] }} ({{ ins[0] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

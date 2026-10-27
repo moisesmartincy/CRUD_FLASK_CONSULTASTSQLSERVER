@@ -1,0 +1,115 @@
+{% extends 'base.html' %}
+
+{% block title %}Probar Trigger de Auditoría{% endblock %}
+
+{% block content %}
+<div class="row g-4 justify-content-center">
+    <div class="col-12 col-xl-10">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header bg-danger text-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                <div>
+                    <h4 class="mb-0 fw-bold"><i class="bi bi-lightning-charge me-2"></i>Botón 6: Probar Trigger de Auditoría (AFTER INSERT)</h4>
+                    <small>Disparador T-SQL automático <code>tgr_RegistrarNuevoCliente</code> sobre la tabla <code>Clientes</code></small>
+                </div>
+                <a href="{{ url_for('index') }}" class="btn btn-outline-light btn-sm fw-bold">
+                    <i class="bi bi-arrow-left me-1"></i> Dashboard
+                </a>
+            </div>
+            <div class="card-body p-4">
+
+                <!-- Explicación Técnica -->
+                <div class="alert alert-light border border-danger-subtle p-3 mb-4 rounded-3">
+                    <div class="d-flex align-items-start gap-3">
+                        <i class="bi bi-info-circle-fill text-danger fs-3"></i>
+                        <div>
+                            <h6 class="fw-bold mb-1 text-danger">Mecanismo de Auditoría Automatizada por Disparador (Trigger):</h6>
+                            <p class="small text-muted mb-0">
+                                Cuando la aplicación Flask ejecuta un <code>INSERT INTO Clientes (...)</code>, el motor de SQL Server dispara automáticamente el trigger <code>tgr_RegistrarNuevoCliente</code>. Éste intercepta los datos de la pseudo-tabla <code>inserted</code> y genera un nuevo registro en <code>AuditoriaClientes</code> con la marca de tiempo exacta (<code>GETDATE()</code>) y la acción <code>'INSERT'</code>.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Formulario para disparar el Trigger -->
+                <div class="card border border-light-subtle shadow-none bg-light p-4 mb-4 rounded-3">
+                    <h5 class="fw-bold mb-3"><i class="bi bi-plus-circle text-danger me-2"></i>Ejecutar Inserción de Prueba</h5>
+                    <form method="POST" class="row g-3">
+                        <div class="col-md-5">
+                            <label for="nombre" class="form-label fw-bold">Nombre del Cliente / Persona:</label>
+                            <input type="text" class="form-control" id="nombre" name="nombre" placeholder="Ej: Participante Juan Pérez" required>
+                        </div>
+                        <div class="col-md-5">
+                            <label for="email" class="form-label fw-bold">Correo Electrónico:</label>
+                            <input type="email" class="form-control" id="email" name="email" placeholder="Ej: juan.perez@baile.com" required>
+                        </div>
+                        <div class="col-md-2 d-flex align-items-end">
+                            <button type="submit" class="btn btn-danger w-100 fw-bold py-2">
+                                <i class="bi bi-play-fill"></i> Disparar
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Tarjeta del Último Insertado -->
+                {% if ultimo %}
+                <div class="alert alert-success border-0 shadow-sm mb-4">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-check2-circle me-1"></i>Registro Insertado en Tabla Clientes:</h6>
+                    <ul class="mb-0 small">
+                        <li><strong>ClienteID:</strong> {{ ultimo[0] }}</li>
+                        <li><strong>Nombre:</strong> {{ ultimo[1] }}</li>
+                        <li><strong>Email:</strong> {{ ultimo[2] }}</li>
+                        <li><strong>Fecha Registro:</strong> {{ ultimo[3] }}</li>
+                    </ul>
+                </div>
+                {% endif %}
+
+                <!-- Tabla de Auditoría (SELECT * FROM AuditoriaClientes) -->
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h5 class="fw-bold mb-0"><i class="bi bi-journal-text me-2 text-primary"></i>Registros en la Tabla <code>AuditoriaClientes</code></h5>
+                    <span class="badge bg-secondary">Últimos 10 registros auditados</span>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table table-hover table-striped align-middle mb-0">
+                        <thead class="table-dark">
+                            <tr>
+                                <th>ID Auditoría</th>
+                                <th>Cliente ID</th>
+                                <th>Nombre Cliente</th>
+                                <th>Fecha & Hora de Cambio</th>
+                                <th>Acción Ejecutada</th>
+                                <th>Estado Trigger</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for a in auditorias %}
+                            <tr>
+                                <td class="fw-bold font-monospace">#{{ a[0] }}</td>
+                                <td><span class="badge bg-light text-dark border">Cliente #{{ a[1] }}</span></td>
+                                <td class="fw-semibold">{{ a[2] }}</td>
+                                <td><i class="bi bi-clock me-1 text-muted"></i>{{ a[3] }}</td>
+                                <td><span class="badge bg-warning text-dark font-monospace">{{ a[4] }}</span></td>
+                                <td>
+                                    <span class="badge bg-success">
+                                        <i class="bi bi-check-all me-1"></i> Trigger Exitoso
+                                    </span>
+                                </td>
+                            </tr>
+                            {% else %}
+                            <tr>
+                                <td colspan="6" class="text-center py-4 text-muted">
+                                    <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                    Aún no hay registros en la tabla de auditoría. Haz clic en "Disparar" para probar.
+                                </td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

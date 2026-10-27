@@ -1,0 +1,157 @@
+SQL SERVER
+create database concursoBaile
+use concursoBaile
+
+create table ConcursoBaile
+(
+nroC integer not null,
+fechaIni date,
+fechaFin date,
+primary key(nroC)
+);
+
+create table danza
+(
+codDan varchar(5)not null,
+nombre varchar(100),
+descr varchar(300),
+primary key(codDan)
+);
+
+create table institucion
+(
+codIns varchar(5) not null,
+nombre varchar(50),
+descr varchar(100),
+primary key(codIns)
+);
+
+create table participante
+(
+codPar varchar(5)not null,
+nombre varchar(15),
+paterno varchar(15),
+materno varchar(15),
+fecnac date,
+sexo varchar(1),
+tipo varchar(2), --participante, jurado, asesor
+codIns varchar(5),
+primary key(codPar),
+foreign key(codIns) references Institucion
+);
+
+create table Musica
+(
+codMus varchar(5)not null,
+titulo varchar(100),
+autor varchar(50),
+tipo varchar(10),
+primary key(codMus)
+);
+
+create table baile
+(
+nroBai integer not null,
+codParMuj varchar(5)not null,
+codParVar varchar(5)not null,
+fecha date,
+horaIni varchar(5),
+horaFin varchar(5),
+ptjeTotal integer,
+codDan varchar(5),
+codCou varchar(5),
+codMus varchar(5),
+codCon integer,
+primary key(nroBai),
+foreign key(codParMuj) references Participante,
+foreign key(codParVar) references Participante,
+foreign key(codDan) references Danza,
+foreign key(codCou) references Participante,
+foreign key(codMus) references Musica,
+foreign key(codCon) references ConcursoBaile
+);
+
+create table DetalleBaile
+(
+nroBai integer not null,
+nroDet integer not null,
+codJue varchar(5)not null,
+ptje integer,
+obs varchar(100),
+primary key(nroBai, nroDet),
+foreign key(codJue) references Participante
+);
+
+create table Auspiciador
+(
+codAus varchar(5) not null,
+nombre varchar(50) not null,
+descr varchar(50),
+primary key(codAus)
+);
+
+create table Publicidad
+(
+nroCon integer not null,
+codAus varchar(5) not null,
+fechaIni varchar(50) not null,
+producto varchar(50),
+primary key(nroCon,codAus),
+foreign key(nroCon) references ConcursoBaile,
+foreign key(codAus) references Auspiciador
+);
+
+insert into concursoBaile values(1,'1/1/2026','6/6/2026');
+insert into concursoBaile values(2,'1/8/2026','1/12/2026');
+
+insert into institucion values('ins01','Alalay','Centro de Niños Abandonados');
+insert into institucion values('ins02','VidaNueva','Hogar para ancianos');
+
+insert into participante values('par01','leo','fernandez','Layme','1/1/2005','v','b','ins01');
+insert into participante values('par02','Carlos','Lopez','Martinez','2/2/2007','v','b','ins02');
+insert into participante values('par03','Miriam','Claros','Perez','2/2/1997','m','b','ins02');
+insert into participante values('par04','Monica','Sequeiros','Millares','1/1/2009','m','j',null);
+insert into participante values('par05','Lucio','Valdivia','Escobar','1/1/2008','v','c',null);
+insert into participante values('par06','Maria','Caceres','Quisbert','1/1/2010','m','b',null);
+insert into participante values('par07','Ana','Mamani','Villca','1/1/2011','m','c',null);
+
+insert into participante values('par08','Pedro','Salazar','Paredes','1/1/2014','v','j',null);
+insert into participante values('par09','Mirko','Callejas','Padilla','1/1/2011','v','j',null);
+insert into participante values('par10','Sandra','Parada','Belmonte','1/1/2000','v','j',null);
+insert into participante values('par11','Cristina','Ramos','Mallea','1/1/1990','m','b',null);
+insert into participante values('par12','Ana','Mamani','Villca','1/1/2000','m','b',null);
+
+insert into danza values('dan01','Regueton','Consiste en..');
+insert into danza values('dan02','cumbia','Consiste en..');
+insert into danza values('dan03','quebradita','Consiste en..');
+insert into danza values('dan04','baile en agua','Consiste en..');
+
+insert into musica values('mus01','Despecha','Rosalia','cumbia');
+insert into musica values('mus02','Bailando la quebradita','Banda el recodo','quebradita');
+insert into musica values('mus03','Lupita','Mister Chivo','cumbia');
+insert into musica values('mus04','Sonata','Sin ley ','quebradita');
+insert into musica values('mus05','Baila esta cumbia','Selena Gomez','cumbia');
+
+insert into baile values(1,'par01','par03','3/3/2026','20:00','20:13',30,'dan02','par01','mus01',1);
+insert into baile values(2,'par02','par06','3/3/2026','20:20','20:33',30,'dan02','par07','mus02',1);
+insert into baile values(3,'par01','par03','10/3/2026','23:20','23:33',23,'dan03','par01','mus03',1);
+insert into baile values(4,'par02','par06','10/3/2026','23:40','23:53',28,'dan03','par07','mus04',1);
+insert into baile values(5,'par01','par11','10/3/2026','21:45','22:00',28,'dan01','par01','mus01',2);
+
+
+insert into DetalleBaile values (1,1,'par04',9,'Sin obs');
+insert into DetalleBaile values (1,2,'par08',8,'Sin obs');
+insert into DetalleBaile values (1,3,'par09',3,'Sin obs');
+insert into DetalleBaile values (1,4,'par10',10,'Sin obs');
+
+insert into DetalleBaile values (2,1,'par04',7,'Sin obs');
+insert into DetalleBaile values (2,2,'par08',4,'Sin obs');
+insert into DetalleBaile values (2,3,'par09',5,'Sin obs');
+insert into DetalleBaile values (2,4,'par10',7,'Sin obs');
+
+insert into auspiciador values('aus01','CocaCola','Empresa Extranjera');
+insert into auspiciador values('aus02','Muebles Inti','Empresa Boliviana Central Oruro');
+insert into auspiciador values('aus03','Cerveceria Paceña','Empresa Boliviana');
+
+insert into  Publicidad values(1,'aus01','2/2/2026','CocaColaCero');
+insert into  Publicidad values(1,'aus02','2/2/2026','Muebles para dormitorio');

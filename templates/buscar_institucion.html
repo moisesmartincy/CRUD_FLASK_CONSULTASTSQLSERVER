@@ -1,0 +1,86 @@
+{% extends 'base.html' %}
+
+{% block title %}Buscar Institución{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center g-4">
+    <div class="col-lg-8">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header bg-info text-dark py-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0 fw-bold"><i class="bi bi-building me-2"></i>Botón 2: Función dbo.obInst</h4>
+                    <small>Obtener la institución por la que baila un participante según su nombre y apellidos</small>
+                </div>
+                <a href="{{ url_for('index') }}" class="btn btn-dark btn-sm">
+                    <i class="bi bi-arrow-left me-1"></i> Dashboard
+                </a>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small">
+                    Ejecuta en SQL Server: <code>SELECT dbo.obInst(@nombre, @paterno, @materno)</code>
+                </p>
+
+                <!-- Formulario -->
+                <form method="POST" class="row g-3">
+                    <div class="col-md-4">
+                        <label for="nombre" class="form-label fw-bold">Nombre</label>
+                        <input type="text" class="form-control" id="nombre" name="nombre" value="{{ nombre }}" placeholder="Ej: leo" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="paterno" class="form-label fw-bold">Apellido Paterno</label>
+                        <input type="text" class="form-control" id="paterno" name="paterno" value="{{ paterno }}" placeholder="Ej: fernandez" required>
+                    </div>
+                    <div class="col-md-4">
+                        <label for="materno" class="form-label fw-bold">Apellido Materno</label>
+                        <input type="text" class="form-control" id="materno" name="materno" value="{{ materno }}" placeholder="Ej: Layme" required>
+                    </div>
+                    <div class="col-12 text-end">
+                        <button type="submit" class="btn btn-info text-dark fw-bold px-4">
+                            <i class="bi bi-search me-1"></i> Consultar Institución
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Resultado -->
+                {% if resultado is not none %}
+                <div class="mt-4 pt-3 border-top">
+                    <h5 class="fw-bold mb-3">Resultado de la Función:</h5>
+                    <div class="p-3 bg-light rounded-3 border d-flex align-items-center gap-3">
+                        <i class="bi bi-bank2 fs-2 text-primary"></i>
+                        <div>
+                            <span class="text-muted d-block small">Institución asociada para <strong>{{ nombre }} {{ paterno }} {{ materno }}</strong>:</span>
+                            <span class="fs-4 fw-bold text-dark">{{ resultado }}</span>
+                        </div>
+                    </div>
+                </div>
+                {% endif %}
+
+                <!-- Sugerencias para prueba rápida -->
+                {% if sugeridos %}
+                <div class="mt-4 pt-3 border-top">
+                    <small class="text-muted fw-bold d-block mb-2"><i class="bi bi-lightning-fill text-warning me-1"></i>Participantes disponibles para probar rápidamente:</small>
+                    <div class="d-flex flex-wrap gap-2">
+                        {% for s in sugeridos %}
+                        <button type="button" class="btn btn-sm btn-outline-secondary" onclick="rellenar('{{ s[0] }}', '{{ s[1] }}', '{{ s[2] }}')">
+                            {{ s[0] }} {{ s[1] }} {{ s[2] }}
+                        </button>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function rellenar(nom, pat, mat) {
+        document.getElementById('nombre').value = nom;
+        document.getElementById('paterno').value = pat;
+        document.getElementById('materno').value = mat;
+    }
+</script>
+{% endblock %}
+

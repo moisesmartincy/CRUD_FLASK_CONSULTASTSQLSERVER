@@ -1,0 +1,360 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard Principal{% endblock %}
+
+{% block content %}
+<div class="row g-4 mb-4">
+    <!-- Encabezado / Bienvenida -->
+    <div class="col-12">
+        <div class="card card-custom p-4 bg-white border-start border-primary border-4 shadow-sm">
+            <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+                <div>
+                    <h2 class="h3 fw-bold text-dark mb-1">
+                        <i class="bi bi-speedometer2 text-primary me-2"></i>Dashboard Concurso de Baile
+                    </h2>
+                    <p class="text-muted mb-0">
+                        Gestión centralizada de participantes, presentaciones, reportes dinámicos en PDF y ejecución de rutinas T-SQL en SQL Server.
+                    </p>
+                </div>
+                <div class="d-flex align-items-center gap-2">
+                    <span class="badge bg-primary fs-6 px-3 py-2">
+                        <i class="bi bi-hdd-network me-1"></i> {{ server_info.db }}
+                    </span>
+                    <span class="badge bg-secondary fs-6 px-3 py-2">
+                        <i class="bi bi-shield-check me-1"></i> Windows Auth
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- REQUERIMIENTO 3: PANEL DE BOTONES EXTRA (VISTAS, FUNCIONES, TRIGGERS) -->
+    <!-- ===================================================================== -->
+    <div class="col-12">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header card-header-custom bg-light py-3 d-flex align-items-center justify-content-between">
+                <span class="fs-5 fw-bold text-secondary">
+                    <i class="bi bi-terminal-split text-indigo me-2"></i>Panel de Rutinas T-SQL (Vistas, Funciones, Procedimientos, Cursores y Triggers)
+                </span>
+                <span class="badge bg-info text-dark">6 Operaciones Especiales</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-3">
+                    
+                    <!-- Botón 1: Vista -->
+                    <div class="col">
+                        <div class="card h-100 border border-primary-subtle shadow-none p-3 rounded-3 bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-primary p-2 me-2"><i class="bi bi-table fs-6"></i></span>
+                                <h6 class="fw-bold mb-0">Botón 1: Vista de Bailes</h6>
+                            </div>
+                            <p class="text-muted small mb-3">Ejecuta <code>SELECT * FROM vista1</code> para mostrar varón, mujer, danza, música, coach y fecha.</p>
+                            <a href="{{ url_for('vista_bailes') }}" class="btn btn-primary btn-sm mt-auto btn-action">
+                                <i class="bi bi-eye"></i> Ver Vista de Bailes
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Botón 2: Función Buscar Institución -->
+                    <div class="col">
+                        <div class="card h-100 border border-info-subtle shadow-none p-3 rounded-3 bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-info text-dark p-2 me-2"><i class="bi bi-building fs-6"></i></span>
+                                <h6 class="fw-bold mb-0">Botón 2: Buscar Institución</h6>
+                            </div>
+                            <p class="text-muted small mb-3">Ejecuta la función escalar <code>dbo.obInst(?, ?, ?)</code> enviando nombre y apellidos.</p>
+                            <a href="{{ url_for('buscar_institucion') }}" class="btn btn-info text-dark btn-sm mt-auto btn-action">
+                                <i class="bi bi-search"></i> Buscar Institución
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Botón 3: Función Contar Participantes -->
+                    <div class="col">
+                        <div class="card h-100 border border-success-subtle shadow-none p-3 rounded-3 bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-success p-2 me-2"><i class="bi bi-person-badge fs-6"></i></span>
+                                <h6 class="fw-bold mb-0">Botón 3: Contar Participantes</h6>
+                            </div>
+                            <p class="text-muted small mb-3">Ejecuta la función escalar <code>dbo.cantidad(?)</code> filtrando por tipo: b, j ó c.</p>
+                            <a href="{{ url_for('contar_participantes') }}" class="btn btn-success btn-sm mt-auto btn-action">
+                                <i class="bi bi-calculator"></i> Contar Participantes
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Botón 4: Procedimiento Filtrar por Fecha -->
+                    <div class="col">
+                        <div class="card h-100 border border-warning-subtle shadow-none p-3 rounded-3 bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-warning text-dark p-2 me-2"><i class="bi bi-calendar-event fs-6"></i></span>
+                                <h6 class="fw-bold mb-0">Botón 4: Filtrar por Fecha</h6>
+                            </div>
+                            <p class="text-muted small mb-3">Ejecuta el stored procedure <code>EXEC mostrarBaile ?</code> para filtrar bailes por fecha.</p>
+                            <a href="{{ url_for('filtrar_baile_fecha') }}" class="btn btn-warning text-dark btn-sm mt-auto btn-action">
+                                <i class="bi bi-funnel"></i> Filtrar Baile por Fecha
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Botón 5: Cursor Comprobar Puntajes -->
+                    <div class="col">
+                        <div class="card h-100 border border-secondary-subtle shadow-none p-3 rounded-3 bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-dark p-2 me-2"><i class="bi bi-check2-all fs-6"></i></span>
+                                <h6 class="fw-bold mb-0">Botón 5: Comprobar Puntajes</h6>
+                            </div>
+                            <p class="text-muted small mb-3">Ejecuta la rutina equivalente de cursores anidados comparando ptjeTotal vs suma jurados.</p>
+                            <a href="{{ url_for('comprobar_puntajes') }}" class="btn btn-dark btn-sm mt-auto btn-action">
+                                <i class="bi bi-sliders"></i> Comprobar Puntajes
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Botón 6: Trigger de Auditoría -->
+                    <div class="col">
+                        <div class="card h-100 border border-danger-subtle shadow-none p-3 rounded-3 bg-light">
+                            <div class="d-flex align-items-center mb-2">
+                                <span class="badge bg-danger p-2 me-2"><i class="bi bi-lightning-charge fs-6"></i></span>
+                                <h6 class="fw-bold mb-0">Botón 6: Trigger de Auditoría</h6>
+                            </div>
+                            <p class="text-muted small mb-3">Realiza un INSERT y consulta la tabla de auditoría para verificar el trigger AFTER INSERT.</p>
+                            <a href="{{ url_for('probar_trigger') }}" class="btn btn-danger btn-sm mt-auto btn-action">
+                                <i class="bi bi-play-circle"></i> Probar Trigger
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- REQUERIMIENTO 4: GENERADOR DE REPORTES PDF DINÁMICOS (REPORTLAB)     -->
+    <!-- ===================================================================== -->
+    <div class="col-12">
+        <div class="card card-custom shadow-sm border-0 bg-white">
+            <div class="card-header card-header-custom bg-light py-3 d-flex align-items-center justify-content-between">
+                <span class="fs-5 fw-bold text-danger">
+                    <i class="bi bi-file-earmark-pdf-fill me-2"></i>Generador de Reportes PDF Dinámicos (ReportLab)
+                </span>
+                <span class="badge bg-danger">Exportación en Memoria (BytesIO)</span>
+            </div>
+            <div class="card-body p-4">
+                <div class="row align-items-center g-3">
+                    <div class="col-md-5">
+                        <label for="selectTablaPdf" class="form-label fw-bold">Selecciona la Tabla de la Base de Datos:</label>
+                        <select id="selectTablaPdf" class="form-select form-select-lg">
+                            <option value="Participante" selected>Tabla: Participante (Bailarines, Jurados, Coaches)</option>
+                            <option value="Baile">Tabla: Baile (Presentaciones registradas)</option>
+                            <option value="Danza">Tabla: Danza (Géneros de baile)</option>
+                            <option value="Musica">Tabla: Musica (Canciones y artistas)</option>
+                            <option value="Institucion">Tabla: Institucion (Academias y hogares)</option>
+                            <option value="ConcursoBaile">Tabla: ConcursoBaile (Eventos y fechas)</option>
+                        </select>
+                    </div>
+                    <div class="col-md-7 d-flex flex-wrap gap-2 align-items-end mt-md-4">
+                        <button type="button" class="btn btn-danger btn-lg btn-action" onclick="abrirReportePdf(false)">
+                            <i class="bi bi-file-earmark-pdf"></i> Ver Reporte PDF (Navegador)
+                        </button>
+                        <button type="button" class="btn btn-outline-danger btn-lg btn-action" onclick="abrirReportePdf(true)">
+                            <i class="bi bi-download"></i> Descargar PDF
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- ===================================================================== -->
+    <!-- REQUERIMIENTO 2: CRUD DE TABLAS (PARTICIPANTE Y BAILE)                -->
+    <!-- ===================================================================== -->
+    <div class="col-12">
+        <!-- Pestañas de Navegación CRUD -->
+        <ul class="nav nav-pills nav-fill mb-3" id="crudTab" role="tablist">
+            <li class="nav-item" role="presentation">
+                <button class="nav-link active fw-bold fs-5 py-3" id="tab-participantes" data-bs-toggle="tab" data-bs-target="#panel-participantes" type="button" role="tab">
+                    <i class="bi bi-people-fill me-2"></i> Gestión de Participantes ({{ participantes|length }})
+                </button>
+            </li>
+            <li class="nav-item" role="presentation">
+                <button class="nav-link fw-bold fs-5 py-3" id="tab-bailes" data-bs-toggle="tab" data-bs-target="#panel-bailes" type="button" role="tab">
+                    <i class="bi bi-music-player-fill me-2"></i> Gestión de Bailes / Presentaciones ({{ bailes|length }})
+                </button>
+            </li>
+        </ul>
+
+        <div class="tab-content" id="crudTabContent">
+            
+            <!-- PANEL CRUD: PARTICIPANTES -->
+            <div class="tab-pane fade show active" id="panel-participantes" role="tabpanel">
+                <div class="card card-custom shadow-sm border-0">
+                    <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div>
+                            <h4 class="mb-0 fw-bold text-dark"><i class="bi bi-person-lines-fill text-primary me-2"></i>Listado de Participantes</h4>
+                            <small class="text-muted">Bailarines, Jurados y Coaches registrados en la base de datos</small>
+                        </div>
+                        <a href="{{ url_for('add_participante') }}" class="btn btn-success btn-action">
+                            <i class="bi bi-person-plus-fill"></i> Registrar Nuevo Participante
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Nombre Completo</th>
+                                        <th>Fec. Nacimiento</th>
+                                        <th>Sexo</th>
+                                        <th>Tipo Rol</th>
+                                        <th>Institución</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for p in participantes %}
+                                    <tr>
+                                        <td class="fw-bold font-monospace">{{ p[0] }}</td>
+                                        <td>{{ p[1] }} {{ p[2] }} {{ p[3] }}</td>
+                                        <td>{{ p[4] if p[4] else '-' }}</td>
+                                        <td>
+                                            {% if p[5] == 'v' %}
+                                                <span class="badge bg-primary"><i class="bi bi-gender-male"></i> Varón</span>
+                                            {% elif p[5] == 'm' %}
+                                                <span class="badge bg-pink text-white" style="background-color: #ec4899;"><i class="bi bi-gender-female"></i> Mujer</span>
+                                            {% else %}
+                                                {{ p[5] }}
+                                            {% endif %}
+                                        </td>
+                                        <td>
+                                            {% if p[6] == 'b' %}
+                                                <span class="badge badge-b">Bailarín</span>
+                                            {% elif p[6] == 'j' %}
+                                                <span class="badge badge-j">Jurado</span>
+                                            {% elif p[6] == 'c' %}
+                                                <span class="badge badge-c">Coach</span>
+                                            {% else %}
+                                                <span class="badge bg-secondary">{{ p[6] }}</span>
+                                            {% endif %}
+                                        </td>
+                                        <td><i class="bi bi-building me-1 text-muted"></i>{{ p[7] }}</td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ url_for('edit_participante', codPar=p[0]) }}" class="btn btn-outline-primary" title="Editar">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a href="{{ url_for('delete_participante', codPar=p[0]) }}" class="btn btn-outline-danger" title="Eliminar" onclick="return confirm('¿Confirma eliminar al participante {{ p[1] }} {{ p[2] }} ({{ p[0] }})?');">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="7" class="text-center py-4 text-muted">
+                                            <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                            No hay participantes registrados actualmente.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- PANEL CRUD: BAILES -->
+            <div class="tab-pane fade" id="panel-bailes" role="tabpanel">
+                <div class="card card-custom shadow-sm border-0">
+                    <div class="card-header bg-white py-3 d-flex flex-wrap justify-content-between align-items-center gap-2">
+                        <div>
+                            <h4 class="mb-0 fw-bold text-dark"><i class="bi bi-trophy-fill text-warning me-2"></i>Listado de Bailes y Presentaciones</h4>
+                            <small class="text-muted">Parejas, coreografía, género musical y puntajes obtenidos</small>
+                        </div>
+                        <a href="{{ url_for('add_baile') }}" class="btn btn-success btn-action">
+                            <i class="bi bi-plus-circle-fill"></i> Registrar Nuevo Baile
+                        </a>
+                    </div>
+                    <div class="card-body p-0">
+                        <div class="table-responsive">
+                            <table class="table table-hover table-striped align-middle mb-0">
+                                <thead>
+                                    <tr>
+                                        <th>Nro</th>
+                                        <th>Pareja de Baile</th>
+                                        <th>Fecha & Horario</th>
+                                        <th>Danza</th>
+                                        <th>Música</th>
+                                        <th>Coach</th>
+                                        <th>Ptje Total</th>
+                                        <th>Concurso</th>
+                                        <th class="text-center">Acciones</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for b in bailes %}
+                                    <tr>
+                                        <td class="fw-bold font-monospace">#{{ b[0] }}</td>
+                                        <td>
+                                            <div><i class="bi bi-gender-female text-danger me-1"></i><strong>Mujer:</strong> {{ b[1] if b[1] else '-' }}</div>
+                                            <div><i class="bi bi-gender-male text-primary me-1"></i><strong>Varón:</strong> {{ b[2] if b[2] else '-' }}</div>
+                                        </td>
+                                        <td>
+                                            <div class="small fw-bold"><i class="bi bi-calendar3 me-1"></i>{{ b[3] }}</div>
+                                            <div class="small text-muted"><i class="bi bi-clock me-1"></i>{{ b[4] }} - {{ b[5] }}</div>
+                                        </td>
+                                        <td><span class="badge bg-light text-dark border">{{ b[7] if b[7] else '-' }}</span></td>
+                                        <td><small><i class="bi bi-music-note me-1"></i>{{ b[9] if b[9] else '-' }}</small></td>
+                                        <td><small>{{ b[8] if b[8] else 'Sin coach' }}</small></td>
+                                        <td>
+                                            <span class="badge bg-primary fs-6">{{ b[6] }} pts</span>
+                                        </td>
+                                        <td><span class="badge bg-secondary">C-{{ b[10] }}</span></td>
+                                        <td class="text-center">
+                                            <div class="btn-group btn-group-sm">
+                                                <a href="{{ url_for('edit_baile', nroBai=b[0]) }}" class="btn btn-outline-primary" title="Editar">
+                                                    <i class="bi bi-pencil-square"></i>
+                                                </a>
+                                                <a href="{{ url_for('delete_baile', nroBai=b[0]) }}" class="btn btn-outline-danger" title="Eliminar" onclick="return confirm('¿Confirma eliminar el baile Nro {{ b[0] }}?');">
+                                                    <i class="bi bi-trash"></i>
+                                                </a>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                    {% else %}
+                                    <tr>
+                                        <td colspan="9" class="text-center py-4 text-muted">
+                                            <i class="bi bi-inbox fs-2 d-block mb-2"></i>
+                                            No hay bailes registrados actualmente.
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    function abrirReportePdf(descargar) {
+        const tabla = document.getElementById('selectTablaPdf').value;
+        const url = `/reporte_pdf/${tabla}${descargar ? '?download=1' : ''}`;
+        if (descargar) {
+            window.location.href = url;
+        } else {
+            window.open(url, '_blank');
+        }
+    }
+</script>
+{% endblock %}

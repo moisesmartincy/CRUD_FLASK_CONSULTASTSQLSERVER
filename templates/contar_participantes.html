@@ -1,0 +1,57 @@
+{% extends 'base.html' %}
+
+{% block title %}Contar Participantes{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center g-4">
+    <div class="col-lg-7">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header bg-success text-white py-3 d-flex justify-content-between align-items-center">
+                <div>
+                    <h4 class="mb-0 fw-bold"><i class="bi bi-people me-2"></i>Botón 3: Función dbo.cantidad</h4>
+                    <small>Contar participantes registrados según su tipo de rol</small>
+                </div>
+                <a href="{{ url_for('index') }}" class="btn btn-light btn-sm fw-bold">
+                    <i class="bi bi-arrow-left me-1"></i> Dashboard
+                </a>
+            </div>
+            <div class="card-body p-4">
+                <p class="text-muted small">
+                    Ejecuta en SQL Server: <code>SELECT dbo.cantidad(@tipo)</code>
+                </p>
+
+                <!-- Formulario Selector -->
+                <form method="POST" class="row g-3 align-items-end">
+                    <div class="col-md-8">
+                        <label for="tipo" class="form-label fw-bold">Seleccione el Tipo de Participante:</label>
+                        <select class="form-select form-select-lg" id="tipo" name="tipo">
+                            <option value="b" {% if tipo_seleccionado == 'b' %}selected{% endif %}>Bailarines ('b')</option>
+                            <option value="j" {% if tipo_seleccionado == 'j' %}selected{% endif %}>Jurados ('j')</option>
+                            <option value="c" {% if tipo_seleccionado == 'c' %}selected{% endif %}>Coaches / Entrenadores ('c')</option>
+                        </select>
+                    </div>
+                    <div class="col-md-4">
+                        <button type="submit" class="btn btn-success btn-lg w-100 fw-bold">
+                            <i class="bi bi-calculator me-1"></i> Calcular Total
+                        </button>
+                    </div>
+                </form>
+
+                <!-- Tarjeta de Resultado -->
+                {% if total is not none %}
+                <div class="mt-4 pt-3 border-top text-center">
+                    <div class="p-4 bg-light rounded-3 border">
+                        <span class="text-muted text-uppercase fw-semibold d-block mb-1">Total de {{ tipo_nombre }}</span>
+                        <div class="display-3 fw-bold text-success">{{ total }}</div>
+                        <span class="badge bg-success-subtle text-success fs-6 mt-2 px-3 py-2 border border-success-subtle">
+                            Registrados en la base de datos concursoBaile
+                        </span>
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

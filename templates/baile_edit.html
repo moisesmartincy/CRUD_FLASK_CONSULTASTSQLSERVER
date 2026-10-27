@@ -1,0 +1,131 @@
+{% extends 'base.html' %}
+
+{% block title %}Editar Baile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header bg-primary text-white py-3 d-flex justify-content-between align-items-center">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-pencil-square me-2"></i>Editar Presentación de Baile Nro #{{ baile[0] }}</h4>
+                <span class="badge bg-light text-dark font-monospace fs-6">Baile #{{ baile[0] }}</span>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label class="form-label fw-bold">Nro Baile (PK)</label>
+                            <input type="number" class="form-control bg-light" value="{{ baile[0] }}" disabled>
+                            <div class="form-text">Clave primaria no editable.</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="fecha" class="form-label fw-bold">Fecha de Presentación <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" value="{{ baile[3] }}" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="horaIni" class="form-label fw-bold">Hora Inicio <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="horaIni" name="horaIni" value="{{ baile[4] }}" maxlength="5" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="horaFin" class="form-label fw-bold">Hora Fin <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="horaFin" name="horaFin" value="{{ baile[5] }}" maxlength="5" required>
+                        </div>
+
+                        <!-- Pareja de Baile -->
+                        <div class="col-md-6">
+                            <label for="codParMuj" class="form-label fw-bold text-danger">
+                                <i class="bi bi-gender-female"></i> Participante Femenina (Mujer) <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="codParMuj" name="codParMuj" required>
+                                {% for m in mujeres %}
+                                    <option value="{{ m[0] }}" {% if baile[1] == m[0] %}selected{% endif %}>
+                                        {{ m[1] }} ({{ m[0] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="codParVar" class="form-label fw-bold text-primary">
+                                <i class="bi bi-gender-male"></i> Participante Masculino (Varón) <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="codParVar" name="codParVar" required>
+                                {% for v in varones %}
+                                    <option value="{{ v[0] }}" {% if baile[2] == v[0] %}selected{% endif %}>
+                                        {{ v[1] }} ({{ v[0] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Danza y Música -->
+                        <div class="col-md-6">
+                            <label for="codDan" class="form-label fw-bold">Danza / Género <span class="text-danger">*</span></label>
+                            <select class="form-select" id="codDan" name="codDan" required>
+                                {% for d in danzas %}
+                                    <option value="{{ d[0] }}" {% if baile[7] == d[0] %}selected{% endif %}>
+                                        {{ d[1] }} ({{ d[0] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="codMus" class="form-label fw-bold">Música / Canción <span class="text-danger">*</span></label>
+                            <select class="form-select" id="codMus" name="codMus" required>
+                                {% for mu in musicas %}
+                                    <option value="{{ mu[0] }}" {% if baile[9] == mu[0] %}selected{% endif %}>
+                                        {{ mu[1] }} - {{ mu[2] }} ({{ mu[0] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Coach, Concurso y Puntaje -->
+                        <div class="col-md-5">
+                            <label for="codCou" class="form-label fw-bold">Coach / Entrenador</label>
+                            <select class="form-select" id="codCou" name="codCou">
+                                <option value="">-- Sin Coach Asignado (NULL) --</option>
+                                {% for c in coaches %}
+                                    <option value="{{ c[0] }}" {% if baile[8] == c[0] %}selected{% endif %}>
+                                        {{ c[1] }} ({{ c[0] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="codCon" class="form-label fw-bold">Concurso Evento <span class="text-danger">*</span></label>
+                            <select class="form-select" id="codCon" name="codCon" required>
+                                {% for con in concursos %}
+                                    <option value="{{ con[0] }}" {% if baile[10] == con[0] %}selected{% endif %}>
+                                        Concurso #{{ con[0] }} ({{ con[1] }} al {{ con[2] }})
+                                    </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="ptjeTotal" class="form-label fw-bold">Puntaje Total <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="ptjeTotal" name="ptjeTotal" value="{{ baile[6] }}" min="0" max="100" required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-primary">
+                            <i class="bi bi-save me-1"></i> Guardar Cambios
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

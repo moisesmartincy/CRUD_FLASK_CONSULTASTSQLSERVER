@@ -1,0 +1,123 @@
+{% extends 'base.html' %}
+
+{% block title %}Registrar Baile{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-lg-9">
+        <div class="card card-custom shadow-sm border-0">
+            <div class="card-header bg-success text-white py-3">
+                <h4 class="mb-0 fw-bold"><i class="bi bi-plus-circle-fill me-2"></i>Registrar Nueva Presentación de Baile</h4>
+            </div>
+            <div class="card-body p-4">
+                <form method="POST">
+                    <div class="row g-3">
+                        <div class="col-md-3">
+                            <label for="nroBai" class="form-label fw-bold">Nro Baile <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="nroBai" name="nroBai" placeholder="Ej: 6" required autofocus>
+                            <div class="form-text">Identificador numérico único.</div>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="fecha" class="form-label fw-bold">Fecha de Presentación <span class="text-danger">*</span></label>
+                            <input type="date" class="form-control" id="fecha" name="fecha" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="horaIni" class="form-label fw-bold">Hora Inicio <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="horaIni" name="horaIni" placeholder="Ej: 20:00" maxlength="5" required>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="horaFin" class="form-label fw-bold">Hora Fin <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control" id="horaFin" name="horaFin" placeholder="Ej: 20:15" maxlength="5" required>
+                        </div>
+
+                        <!-- Pareja de Baile -->
+                        <div class="col-md-6">
+                            <label for="codParMuj" class="form-label fw-bold text-danger">
+                                <i class="bi bi-gender-female"></i> Participante Femenina (Mujer) <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="codParMuj" name="codParMuj" required>
+                                <option value="" disabled selected>Seleccione bailarina...</option>
+                                {% for m in mujeres %}
+                                    <option value="{{ m[0] }}">{{ m[1] }} ({{ m[0] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="codParVar" class="form-label fw-bold text-primary">
+                                <i class="bi bi-gender-male"></i> Participante Masculino (Varón) <span class="text-danger">*</span>
+                            </label>
+                            <select class="form-select" id="codParVar" name="codParVar" required>
+                                <option value="" disabled selected>Seleccione bailarín...</option>
+                                {% for v in varones %}
+                                    <option value="{{ v[0] }}">{{ v[1] }} ({{ v[0] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Danza y Música -->
+                        <div class="col-md-6">
+                            <label for="codDan" class="form-label fw-bold">Danza / Género <span class="text-danger">*</span></label>
+                            <select class="form-select" id="codDan" name="codDan" required>
+                                <option value="" disabled selected>Seleccione género de danza...</option>
+                                {% for d in danzas %}
+                                    <option value="{{ d[0] }}">{{ d[1] }} ({{ d[0] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-6">
+                            <label for="codMus" class="form-label fw-bold">Música / Canción <span class="text-danger">*</span></label>
+                            <select class="form-select" id="codMus" name="codMus" required>
+                                <option value="" disabled selected>Seleccione música...</option>
+                                {% for mu in musicas %}
+                                    <option value="{{ mu[0] }}">{{ mu[1] }} - {{ mu[2] }} ({{ mu[0] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <!-- Coach, Concurso y Puntaje -->
+                        <div class="col-md-5">
+                            <label for="codCou" class="form-label fw-bold">Coach / Entrenador</label>
+                            <select class="form-select" id="codCou" name="codCou">
+                                <option value="">-- Sin Coach Asignado (NULL) --</option>
+                                {% for c in coaches %}
+                                    <option value="{{ c[0] }}">{{ c[1] }} ({{ c[0] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-4">
+                            <label for="codCon" class="form-label fw-bold">Concurso Evento <span class="text-danger">*</span></label>
+                            <select class="form-select" id="codCon" name="codCon" required>
+                                <option value="" disabled selected>Seleccione concurso...</option>
+                                {% for con in concursos %}
+                                    <option value="{{ con[0] }}">Concurso #{{ con[0] }} ({{ con[1] }} al {{ con[2] }})</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+
+                        <div class="col-md-3">
+                            <label for="ptjeTotal" class="form-label fw-bold">Puntaje Total <span class="text-danger">*</span></label>
+                            <input type="number" class="form-control" id="ptjeTotal" name="ptjeTotal" value="0" min="0" max="100" required>
+                        </div>
+                    </div>
+
+                    <div class="d-flex justify-content-end gap-2 mt-4 pt-3 border-top">
+                        <a href="{{ url_for('index') }}" class="btn btn-secondary">
+                            <i class="bi bi-x-circle me-1"></i> Cancelar
+                        </a>
+                        <button type="submit" class="btn btn-success">
+                            <i class="bi bi-check2-circle me-1"></i> Guardar Baile
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+

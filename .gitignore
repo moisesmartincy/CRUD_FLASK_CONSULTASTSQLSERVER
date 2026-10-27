@@ -1,0 +1,24 @@
+# Python
+venv/
+__pycache__/
+*.py[cod]
+*$py.class
+*.env.local
+
+# Variables de entorno locales
+.env
+
+# Archivos específicos a ignorar por solicitud
+CONSULTAS.txt
+SQLSERVER_CONECTOR-main/
+
+# IDEs
+.vscode/
+.idea/
+
+# OS
+Thumbs.db
+Desktop.ini
+.DS_Store
+
+
